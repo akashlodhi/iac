@@ -2,7 +2,7 @@
 # OUTPUTS FOR JENKINS EC2
 ############################
 
-# Public IP of the EC2 instance
+# Public IP of the VM EC2 instance 
 output "jenkins_public_ip_iac" {
   description = "Public IP of the Jenkins EC2 instance"
   value       = aws_instance.jenkins_iac.public_ip
