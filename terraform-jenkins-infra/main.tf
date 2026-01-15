@@ -2,12 +2,12 @@
 # IAM ROLE FOR JENKINS EC2
 ############################
 
-resource "aws_iam_role" "jenkins_role-iac" {
+resource "aws_iam_role" "jenkins_role_iac" {
   name = "jenkins-ec2-role-iac"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
+    Statement = [ {
       Effect = "Allow"
       Principal = {
         Service = "ec2.amazonaws.com"
@@ -21,7 +21,7 @@ resource "aws_iam_role" "jenkins_role-iac" {
 # IAM POLICY
 ############################
 
-resource "aws_iam_policy" "jenkins_policy" {
+resource "aws_iam_policy" "jenkins_policy_iac" {
   name = "jenkins-basic-policy-iac"
 
   policy = jsonencode({
@@ -44,9 +44,9 @@ resource "aws_iam_policy" "jenkins_policy" {
 # ATTACH POLICY TO ROLE
 ############################
 
-resource "aws_iam_role_policy_attachment" "jenkins_policy_attach" {
-  role       = aws_iam_role.jenkins_role-iac.name
-  policy_arn = aws_iam_policy.jenkins_policy-iac.arn
+resource "aws_iam_role_policy_attachment" "jenkins_policy_attach_iac" {
+  role       = aws_iam_role.jenkins_role_iac.name
+  policy_arn = aws_iam_policy.jenkins_policy_iac.arn
 }
 
 ############################
@@ -54,15 +54,15 @@ resource "aws_iam_role_policy_attachment" "jenkins_policy_attach" {
 ############################
 
 resource "aws_iam_instance_profile" "jenkins_profile_iac" {
-  name = "jenkins-instance-profile_iac"
-  role = aws_iam_role.jenkins_role-iac.name
+  name = "jenkins-instance-profile-iac"
+  role = aws_iam_role.jenkins_role_iac.name
 }
 
 ############################
 # SECURITY GROUP
 ############################
 
-resource "aws_security_group" "jenkins_sg-iac" {
+resource "aws_security_group" "jenkins_sg_iac" {
   name        = "jenkins-sg-iac"
   description = "Allow SSH and Jenkins UI"
 
@@ -97,22 +97,25 @@ resource "aws_security_group" "jenkins_sg-iac" {
 resource "aws_instance" "jenkins_iac" {
   ami                         = "ami-03f4878755434977f" # Ubuntu 22.04 (ap-south-1)
   instance_type               = "t2.micro"
+  key_name                    = var.key_name
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
+  vpc_security_group_ids = [aws_security_group.jenkins_sg_iac.id]
   iam_instance_profile  = aws_iam_instance_profile.jenkins_profile_iac.name
 
   user_data = <<-EOF
     #!/bin/bash
     sudo apt-get update -y
-    sudo apt-get install -y openjdk-17-jdk
+    sudo apt-get install -y openjdk-17-jdk curl gnupg ca-certificates
 
-    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
-      /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+    # Jenkins repo key
+    curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | \
+      sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
 
+    # Jenkins repo
     echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-      https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-      /etc/apt/sources.list.d/jenkins.list > /dev/null
+      https://pkg.jenkins.io/debian-stable binary/ | \
+      sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 
     sudo apt-get update -y
     sudo apt-get install -y jenkins
@@ -124,5 +127,3 @@ resource "aws_instance" "jenkins_iac" {
     Name = "jenkins-server-iac"
   }
 }
-
-
