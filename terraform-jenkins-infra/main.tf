@@ -63,7 +63,7 @@ resource "aws_iam_instance_profile" "jenkins_profile" {
 ############################
 
 resource "aws_security_group" "jenkins_sg" {
-  name        = "jenkins-sg"
+  name        = "jenkins-sg-iac"
   description = "Allow SSH and Jenkins UI"
 
   ingress {
