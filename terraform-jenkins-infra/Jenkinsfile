@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+
+    environment {
+        // Set AWS region
+        AWS_DEFAULT_REGION = 'ap-south-1'
+        // Terraform working directory (your infra folder)
+        TERRAFORM_DIR = 'terraform-jenkins-infra'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                echo "Checking out the repository..."
+                git branch: 'main', url: 'https://github.com/akashlodhi/iac.git'
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir("${TERRAFORM_DIR}") {
+                    echo "Initializing Terraform..."
+                    sh 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Validate') {
+            steps {
+                dir("${TERRAFORM_DIR}") {
+                    echo "Validating Terraform configuration..."
+                    sh 'terraform validate'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                dir("${TERRAFORM_DIR}") {
+                    echo "Generating Terraform plan..."
+                    sh 'terraform plan -out=tfplan'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir("${TERRAFORM_DIR}") {
+                    echo "Applying Terraform plan..."
+                    sh 'terraform apply -auto-approve tfplan'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Terraform applied successfully!"
+        }
+        failure {
+            echo "Terraform run failed. Check the logs."
+        }
+    }
+}
