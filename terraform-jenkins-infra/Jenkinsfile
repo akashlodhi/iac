@@ -1,5 +1,10 @@
 pipeline {
     agent any
+    
+    triggers {
+        // Poll SCM every minute for changes (you can adjust)
+        pollSCM('* * * * *')  // every minute
+    }
 
     environment {
         // Set AWS region
