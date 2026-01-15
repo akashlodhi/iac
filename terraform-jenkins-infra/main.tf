@@ -100,7 +100,7 @@ resource "aws_instance" "jenkins_iac" {
   key_name                    = var.key_name
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [aws_security_group.jenkins_sg_iac.id]
+  vpc_security_group_ids = [aws_security_group.jenkins_sg-iac.id]
   iam_instance_profile  = aws_iam_instance_profile.jenkins_profile_iac.name
 
   user_data = <<-EOF
