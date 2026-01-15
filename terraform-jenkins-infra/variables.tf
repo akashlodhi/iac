@@ -5,9 +5,11 @@ variable "instance_type" {
 }
 
 variable "key_name" {
-  description = "stark_jenkins"
+  description = "EC2 key pair name for Jenkins"
   type        = string
+  default     = "stark_jenkins"
 }
+
 
 variable "region" {
   description = "AWS region"
