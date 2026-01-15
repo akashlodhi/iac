@@ -96,7 +96,7 @@ resource "aws_security_group" "jenkins_sg-iac" {
 
 resource "aws_instance" "jenkins_iac" {
   ami                         = "ami-03f4878755434977f" # Ubuntu 22.04 (ap-south-1)
-  instance_type               = "t2.micro"
+  instance_type               = "t3.medium"
   key_name                    = var.key_name
   associate_public_ip_address = true
 
