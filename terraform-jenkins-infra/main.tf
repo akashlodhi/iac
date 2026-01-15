@@ -91,7 +91,7 @@ resource "aws_security_group" "jenkins_sg-iac" {
 }
 
 ############################
-# EC2 INSTANCE WITH JENKINS
+# EC2 INSTANCE WITH JENKINS T3 medium
 ############################
 
 resource "aws_instance" "jenkins_iac" {
