@@ -19,3 +19,8 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 
+module "ecs_cluster" {
+  source       = "./modules/ecs"
+  cluster_name = var.ecs_cluster_name
+  environment  = var.environment
+}
