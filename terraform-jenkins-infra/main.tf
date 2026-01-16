@@ -97,3 +97,9 @@ module "s3_bucket" {
   acl         = var.acl
   environment = var.environment
 }
+
+module "ecs_cluster" {
+  source       = "./modules/ecs"
+  cluster_name = var.ecs_cluster_name
+  environment  = var.environment
+}

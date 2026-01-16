@@ -37,3 +37,9 @@ variable "environment" {
   type        = string
   default     = "dev"
 }
+
+variable "ecs_cluster_name" {
+  type        = string
+  description = "ECS cluster name"
+  default     = "jenkins-ecs-cluster"
+}

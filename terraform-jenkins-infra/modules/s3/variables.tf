@@ -15,16 +15,3 @@ variable "environment" {
      default     =  "dev"
 }
 
-# ECS variables
-# -------------------------
-variable "ecs_cluster_name" {
-  description = "ECS cluster name"
-  type        = string
-  default     = "jenkins-demo-ecs-cluster"
-}
-
-variable "environment" {
-  description = "Environment name"
-  type        = string
-  default     = "dev"
-}
