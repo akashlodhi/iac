@@ -1,11 +1,19 @@
-############################
-# SECURITY GROUP
-############################
+########################################
+# DATA SOURCE: DEFAULT VPC
+########################################
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+########################################
+# SECURITY GROUP FOR JENKINS
+########################################
 
 resource "aws_security_group" "jenkins_sg_iac" {
   name_prefix = "jenkins-sg-iac-"
   description = "Allow SSH and Jenkins UI"
-  vpc_id     = var.vpc_id   # strongly recommended if not already present
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     description = "SSH"
@@ -35,24 +43,27 @@ resource "aws_security_group" "jenkins_sg_iac" {
   }
 }
 
-
-############################
+########################################
 # EC2 INSTANCE WITH JENKINS
-############################
+########################################
 
 resource "aws_instance" "jenkins_iac" {
-  ami                         = "ami-03f4878755434977f" # Ubuntu 22.04 ap-south-1
+  ami                         = "ami-03f4878755434977f" # Ubuntu 22.04 (ap-south-1)
   instance_type               = "t3.medium"
   key_name                    = var.key_name
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [aws_security_group.id]
+  vpc_security_group_ids = [
+    aws_security_group.jenkins_sg_iac.id
+  ]
 
-  # 👇 IMPORTANT: Instance profile created by bootstrap
+  # IAM instance profile created by BOOTSTRAP
   iam_instance_profile = "jenkins-terraform-profile"
 
   user_data = <<-EOF
     #!/bin/bash
+    set -e
+
     apt-get update -y
     apt-get install -y openjdk-17-jdk curl gnupg ca-certificates
 
@@ -65,6 +76,7 @@ resource "aws_instance" "jenkins_iac" {
 
     apt-get update -y
     apt-get install -y jenkins
+
     systemctl enable jenkins
     systemctl start jenkins
   EOF
