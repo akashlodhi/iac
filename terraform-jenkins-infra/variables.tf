@@ -16,3 +16,24 @@ variable "region" {
   type        = string
   default     = "ap-south-1"
 }
+
+################################
+# S3 VARIABLES (USED BY S3 MODULE)
+################################
+
+variable "bucket_name" {
+  description = "Name of the S3 bucket"
+  type        = string
+}
+
+variable "acl" {
+  description = "ACL for the S3 bucket"
+  type        = string
+  default     = "private"
+}
+
+variable "environment" {
+  description = "Environment name (dev / qa / prod)"
+  type        = string
+  default     = "dev"
+}
