@@ -6,15 +6,20 @@ resource "aws_s3_bucket" "this" {
     Name        = var.bucket_name
     Environment = var.environment
   }
+}
 
-  # Block public access
+# ✅ Block public access (correct way)
+resource "aws_s3_bucket_public_access_block" "this" {
+  bucket = aws_s3_bucket.this.id
+
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
 
-# Optional: Attach a policy to allow full access to the bucket
+# ⚠️ WARNING: This policy makes the bucket public
+# Keep ONLY if intentional (usually NOT recommended)
 resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
 
@@ -22,9 +27,9 @@ resource "aws_s3_bucket_policy" "this" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
+        Effect    = "Allow"
         Principal = "*"
-        Action   = [
+        Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:DeleteObject"
