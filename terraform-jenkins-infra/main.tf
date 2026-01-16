@@ -2,9 +2,10 @@
 # SECURITY GROUP
 ############################
 
-resource "aws_security_group" "jenkins_sg_iac_new" {
-  name        = "jenkins-sg-iac"
+resource "aws_security_group" "jenkins_sg_iac" {
+  name_prefix = "jenkins-sg-iac-"
   description = "Allow SSH and Jenkins UI"
+  vpc_id     = var.vpc_id   # strongly recommended if not already present
 
   ingress {
     description = "SSH"
@@ -33,6 +34,7 @@ resource "aws_security_group" "jenkins_sg_iac_new" {
     Name = "jenkins-sg-iac"
   }
 }
+
 
 ############################
 # EC2 INSTANCE WITH JENKINS
