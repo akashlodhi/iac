@@ -2,7 +2,7 @@
 # SECURITY GROUP
 ############################
 
-resource "aws_security_group" "jenkins_sg_iac" {
+resource "aws_security_group" "jenkins_sg_iac_new" {
   name        = "jenkins-sg-iac"
   description = "Allow SSH and Jenkins UI"
 
@@ -44,7 +44,7 @@ resource "aws_instance" "jenkins_iac" {
   key_name                    = var.key_name
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [aws_security_group.jenkins_sg_iac.id]
+  vpc_security_group_ids = [aws_security_group._new.id]
 
   # 👇 IMPORTANT: Instance profile created by bootstrap
   iam_instance_profile = "jenkins-terraform-profile"
