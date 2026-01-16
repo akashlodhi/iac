@@ -46,7 +46,7 @@ resource "aws_instance" "jenkins_iac" {
   key_name                    = var.key_name
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [aws_security_group._new.id]
+  vpc_security_group_ids = [aws_security_group.id]
 
   # 👇 IMPORTANT: Instance profile created by bootstrap
   iam_instance_profile = "jenkins-terraform-profile"
