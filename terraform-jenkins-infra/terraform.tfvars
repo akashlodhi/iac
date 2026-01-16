@@ -1,2 +1,2 @@
-bucket_name = "terraform-bucket-s3"
+bucket_name = "terraform-bucket-s3-akash"
 environment = "dev"
