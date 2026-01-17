@@ -114,10 +114,11 @@ module "alb" {
 
 module "rds" {
   source          = "./modules/rds"
-  db_name         = "jenkinsdb"
-  master_username = "admin"
-  master_password = var.db_password
-  subnet_ids      = var.private_subnet_ids
+  cluster_id      = "jenkinsdb"
+  master_username = var.master_username
+  master_password = var.master_password
+  db_subnet_ids   = var.private_subnet_ids
   vpc_id          = var.vpc_id
   environment     = var.environment
 }
+
