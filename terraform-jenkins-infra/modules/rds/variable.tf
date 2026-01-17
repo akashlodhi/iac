@@ -9,7 +9,7 @@ variable "engine" {
 
 variable "engine_version" {
   type    = string
-  default = "8.0.mysql_aurora.3.05.2"
+  default = "8.0.mysql_aurora.3.08.2"
 }
 
 variable "master_username" {
