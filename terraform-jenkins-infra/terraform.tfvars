@@ -13,4 +13,7 @@ private_subnet_ids = [
   "subnet-016d01c0d502714a5",
 ]
 
-db_password = "Stark@3000"
+master_username = "adminuser"
+master_password = "Stark@3000"
+
+alb_name = "jenkins-demo-alb"

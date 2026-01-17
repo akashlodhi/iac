@@ -44,13 +44,45 @@ variable "ecs_cluster_name" {
   default     = "jenkins-ecs-cluster"
 }
 
-variable "vpc_id" {}
+# ALB
+##########################
+variable "alb_name" {
+  description = "ALB Name"
+  type        = string
+}
+
+##########################
+# RDS
+##########################
+variable "db_name" {
+  description = "RDS database name"
+  type        = string
+}
+
+variable "master_username" {
+  description = "RDS master username"
+  type        = string
+}
+
+variable "master_password" {
+  description = "RDS master password"
+  type        = string
+  sensitive   = true
+}
+
+# VPC & Subnets
+##########################
+variable "vpc_id" {
+  description = "VPC ID where resources will be deployed"
+  type        = string
+}
+
 variable "public_subnet_ids" {
-  type = list(string)
+  description = "List of public subnet IDs (for ALB)"
+  type        = list(string)
 }
+
 variable "private_subnet_ids" {
-  type = list(string)
-}
-variable "db_password" {
-  sensitive = true
+  description = "List of private subnet IDs (for RDS, ECS tasks)"
+  type        = list(string)
 }
