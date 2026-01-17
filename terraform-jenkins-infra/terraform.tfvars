@@ -17,3 +17,4 @@ master_username = "adminuser"
 master_password = "Stark@3000"
 
 alb_name = "jenkins-demo-alb"
+db_name = "jenkinsdb"
