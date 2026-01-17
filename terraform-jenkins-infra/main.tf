@@ -103,3 +103,21 @@ module "ecs_cluster" {
   cluster_name = var.ecs_cluster_name
   environment  = var.environment
 }
+
+module "alb" {
+  source      = "./modules/alb"
+  alb_name    = "jenkins-demo-alb"
+  vpc_id      = var.vpc_id
+  subnet_ids  = var.public_subnet_ids
+  environment = var.environment
+}
+
+module "rds" {
+  source          = "./modules/rds"
+  db_name         = "jenkinsdb"
+  master_username = "admin"
+  master_password = var.db_password
+  subnet_ids      = var.private_subnet_ids
+  vpc_id          = var.vpc_id
+  environment     = var.environment
+}

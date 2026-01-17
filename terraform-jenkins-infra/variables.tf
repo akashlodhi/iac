@@ -43,3 +43,14 @@ variable "ecs_cluster_name" {
   description = "ECS cluster name"
   default     = "jenkins-ecs-cluster"
 }
+
+variable "vpc_id" {}
+variable "public_subnet_ids" {
+  type = list(string)
+}
+variable "private_subnet_ids" {
+  type = list(string)
+}
+variable "db_password" {
+  sensitive = true
+}
